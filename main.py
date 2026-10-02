@@ -2,13 +2,12 @@ import pygame
 import sys
 
 pygame.init()
-screen = pygame.display.set_mode((1200, 800))
+screen = pygame.display.set_mode((1200, 857))
 clock = pygame.time.Clock()
 pygame.display.set_caption("Awesomsauce Game")
 running = True
 
-test_surface = pygame.Surface((200, 250))
-test_surface.fill((170, 10, 5))
+frog_surface = pygame.image.load('graphics/frog.jpg')
 
 while running: # this is just a while true loop because running  = True
     for event in pygame.event.get():
@@ -17,7 +16,7 @@ while running: # this is just a while true loop because running  = True
                             # could replace with exit() but this is better i think  
 
     screen.fill((40, 33, 80))
-    screen.blit(test_surface,(500,275))
+    screen.blit(frog_surface,(0,0))
 
     pygame.display.update()
     clock.tick(60) # max fps, min fps is just based on comp so optimise  
