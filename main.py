@@ -12,7 +12,7 @@ def display_score():
 pygame.init()
 screen = pygame.display.set_mode((1200, 857)) # i just set to diemsions of picture, can change  
 clock = pygame.time.Clock()
-pygame.display.set_caption("Frog") # name of window  
+pygame.display.set_caption("Frog") # name of window at the top  
 running = True
 test_font = pygame.font.Font(None,100) # default font, size 100 maybe pixels idk#
 
@@ -37,11 +37,11 @@ player_gravity = 0
 player_stand = pygame.image.load('graphics/player.png').convert_alpha()
 player_stand_rect = player_stand.get_rect(center = (580,420))
 
-title_surface = test_font.render('The Frog Game', True, '#7A433C')
-title_rect = title_surface.get_rect(center = (580,100))
+title_surface = test_font.render('The Frog Game', True, '#D9423A') # kinda wanna change the colour  
+title_rect = title_surface.get_rect(center = (600,100))
 
-start_surface = test_font.render('Press Space to Start', True, '#7A433C')
-start_rect = start_surface.get_rect(center = (580,750))
+start_surface = test_font.render('Press Space to Start', True, '#D9423A')
+start_rect = start_surface.get_rect(center = (600,750))
 
 
 while running: # this is just a while true loop because running  = True  
@@ -50,11 +50,11 @@ while running: # this is just a while true loop because running  = True
             running = False # on quit this cancells the while True loop and thus pygame.quit is called
         if game_active:
             if event.type == pygame.MOUSEBUTTONDOWN: # jump imput method  
-                if player_rect.collidepoint(event.pos) and player_rect.bottom >= 700: 
+                if player_rect.collidepoint(event.pos) and player_rect.bottom >= 695: 
                     player_gravity = -25
                 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE and player_rect.bottom >= 700:
+                if event.key == pygame.K_SPACE and player_rect.bottom >= 695:
                     player_gravity = -25 
         else: # reset after game over
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
@@ -98,7 +98,7 @@ while running: # this is just a while true loop because running  = True
         if score == 0: 
             screen.blit(start_surface, start_rect)
         else:
-            score_message = test_font.render(f'Score: {score}', True, '#7A433C')
+            score_message = test_font.render(f'Score: {score}', True, "#D9423A")
             score_message_rect = score_message.get_rect(center = (600, 750))
             screen.blit(score_message, score_message_rect)
 
