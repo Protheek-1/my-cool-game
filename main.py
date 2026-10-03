@@ -80,7 +80,7 @@ while running: # this is just a while true loop because running  = True
         if frog_rect.left < -300: frog_rect.left = 1270
         
         #player
-        player_gravity += 0.8
+        player_gravity += 0.82
         player_rect.y += player_gravity
         if player_rect.bottom >= 700: player_rect.bottom = 700 # this is the ground collision, so player doesn't fall through ground
         screen.blit(player_surface,player_rect) # this is the player charectar, not moving rn but will be in future
@@ -91,7 +91,7 @@ while running: # this is just a while true loop because running  = True
         
     
     else:
-        screen.fill((120, 153, 210))
+        screen.fill((50, 73, 110))
         screen.blit(player_stand, player_stand_rect)
 
         screen.blit(title_surface, title_rect)
