@@ -23,10 +23,6 @@ score = 0
 sky_surf = pygame.image.load('graphics/sky.jpg').convert()
 ground_surf = pygame.image.load('graphics/ground.png').convert_alpha()
 
-#score text
-# score_surf = test_font.render('Frog', True, (180,180,180)) # text, anti-aliasing, color
-# score_rect = score_surf.get_rect(center = (600,100)) # this is the text position, center of screen, 100 pixels down
-
 #charectars 
 frog_surface = pygame.image.load('graphics/frog.png').convert_alpha()
 frog_surface = pygame.transform.rotozoom(frog_surface, 0, 0.6)
