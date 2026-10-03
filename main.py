@@ -22,7 +22,7 @@ while running: # this is just a while true loop because running  = True
     screen.blit(text_surface,(500,100))
 
 
-    pygame.display.update()
+    pygame.display.update() # refreshed display to schow what we added  
     clock.tick(60) # max fps, min fps is just based on comp so optimise  
 
 pygame.quit()
