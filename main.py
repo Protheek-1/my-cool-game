@@ -2,17 +2,19 @@ import pygame
 import sys
 from random import randint
 
+
 #start variables
 game_active = False
 start_time = 0
 score = 0
+fps = 60
 
 # score system, making it a function makes it more usable and easier to change  
 def display_score(): 
     current_time = (pygame.time.get_ticks() - start_time) // 1000
     score_surf = test_font.render(f'Score: {current_time}', False, (50,50,50))
     score_rect = score_surf.get_rect(center = (600,100))
-    pygame.draw.rect(screen,('#74BAF5'),score_rect,)
+    pygame.draw.rect(screen,("#6FB9F6"),score_rect,)
     screen.blit(score_surf,score_rect)
     return current_time
 
@@ -40,7 +42,7 @@ screen = pygame.display.set_mode((1200, 857)) # i just set to diemsions of pictu
 clock = pygame.time.Clock()
 pygame.display.set_caption("Frog") # name of window at the top  
 running = True
-test_font = pygame.font.Font('fonts/pixeltype.ttf',100) # default font, size 100 maybe pixels idk#
+test_font = pygame.font.Font('fonts/pixeltype.ttf',130) # default font, size 100 maybe pixels idk#
 
 #bg
 sky_surf = pygame.image.load('graphics/sky.jpg').convert()
@@ -137,7 +139,7 @@ while running: # this is just a while true loop because running  = True
 
        
     pygame.display.update() # refreshed display to schow what we added  
-    clock.tick(60) # max fps, min fps is just based on comp so optimise  #
+    clock.tick(fps) # max fps, min fps is just based on comp so optimise  #
 
 
 pygame.quit()
