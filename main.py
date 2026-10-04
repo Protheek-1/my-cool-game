@@ -1,6 +1,12 @@
 import pygame
 import sys
 
+#start variables
+game_active = False
+start_time = 0
+score = 0
+
+# score system
 def display_score():
     current_time = (pygame.time.get_ticks() - start_time) // 1000
     score_surf = test_font.render(f'Score: {current_time}', True, (250,250,250))
@@ -9,6 +15,7 @@ def display_score():
     screen.blit(score_surf,score_rect)
     return current_time
 
+# ui setup
 pygame.init()
 screen = pygame.display.set_mode((1200, 857)) # i just set to diemsions of picture, can change  
 clock = pygame.time.Clock()
@@ -16,10 +23,7 @@ pygame.display.set_caption("Frog") # name of window at the top
 running = True
 test_font = pygame.font.Font(None,100) # default font, size 100 maybe pixels idk#
 
-game_active = False
-start_time = 0
-score = 0
-
+#bg
 sky_surf = pygame.image.load('graphics/sky.jpg').convert()
 ground_surf = pygame.image.load('graphics/ground.png').convert_alpha()
 
@@ -33,7 +37,7 @@ player_surface = pygame.transform.rotozoom(player_surface, 0, 0.6)
 player_rect = player_surface.get_rect(midbottom = (200, 700))
 player_gravity = 0
 
-#intro screen
+# intro/end screen
 player_stand = pygame.image.load('graphics/player.png').convert_alpha()
 player_stand_rect = player_stand.get_rect(center = (580,420))
 
@@ -43,7 +47,7 @@ title_rect = title_surface.get_rect(center = (600,100))
 start_surface = test_font.render('Press Space to Start', True, '#D9423A')
 start_rect = start_surface.get_rect(center = (600,750))
 
-
+# game code
 while running: # this is just a while true loop because running  = True  
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
