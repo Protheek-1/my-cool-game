@@ -1,6 +1,7 @@
 import pygame
 import sys
 from random import randint
+
 #start variables
 game_active = False
 start_time = 0
@@ -18,12 +19,12 @@ def display_score():
 def obstacle_movement(obstacle_list):
     if obstacle_list:
         for obstacle_rect in obstacle_list:
-            obstacle_rect.x -= 6.7
+            obstacle_rect.x -= 7.5
 
             if obstacle_rect.bottom == 400: screen.blit(sword_surf,obstacle_rect)
             else: screen.blit(frog_surf,obstacle_rect)
 
-        obstacle_list = [obstacle for obstacle in obstacle_list if obstacle.x > -100] # 
+        obstacle_list = [obstacle for obstacle in obstacle_list if obstacle.x > -250] 
         return obstacle_list
     else: return []
 
@@ -89,7 +90,11 @@ while running: # this is just a while true loop because running  = True
         else: # reset after game over
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 game_active = True
-                start_time = pygame.time.get_ticks() # resets score to 0
+                start_time = pygame.time.get_ticks() # resets score to 0 (time since game start)  
+                obstacle_rect_list.clear() # clears the obstacles so they don't stay on screen when game is restarted
+                player_rect.midbottom = (200, 700)
+                player_gravity = 0
+                
 
         if event.type == obstacle_timer and game_active:
             if randint(0,2):
@@ -120,10 +125,7 @@ while running: # this is just a while true loop because running  = True
     else:
         screen.fill((50, 73, 110))
         screen.blit(player_stand, player_stand_rect)
-        obstacle_rect_list.clear() # clears the obstacles so they don't stay on screen when game is restarted
-        player_rect.midbottom = (200, 700)
-        player_gravity = 0
-
+       
 
         screen.blit(title_surf, title_rect)
         if score == 0: 
