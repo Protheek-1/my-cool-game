@@ -1,19 +1,29 @@
 import pygame
 import sys
-
+from random import randint
 #start variables
 game_active = False
 start_time = 0
 score = 0
 
-# score system
-def display_score():
+# score system, making it a function makes it more usable and easier to change  
+def display_score(): 
     current_time = (pygame.time.get_ticks() - start_time) // 1000
     score_surf = test_font.render(f'Score: {current_time}', True, (250,250,250))
     score_rect = score_surf.get_rect(center = (600,100))
     pygame.draw.rect(screen,((130,150,240)),score_rect, 0, 10)
     screen.blit(score_surf,score_rect)
     return current_time
+
+def obstacle_movement(obstacle_list):
+    if obstacle_list:
+        for obstacle_rect in obstacle_list:
+            obstacle_rect.x -= 6.7
+            screen.blit(frog_surface,obstacle_rect)
+
+        obstacle_list = [obstacle for obstacle in obstacle_list if obstacle.x > -100] # 
+        return obstacle_list
+    else: return []
 
 # ui setup
 pygame.init()
@@ -32,6 +42,8 @@ frog_surface = pygame.image.load('graphics/frog.png').convert_alpha()
 frog_surface = pygame.transform.rotozoom(frog_surface, 0, 0.6)
 frog_rect = frog_surface.get_rect(midbottom = (800, 700))
 
+obstacle_rect_list = []
+
 player_surface = pygame.image.load('graphics/player.png').convert_alpha()
 player_surface = pygame.transform.rotozoom(player_surface, 0, 0.6)
 player_rect = player_surface.get_rect(midbottom = (200, 700))
@@ -46,6 +58,10 @@ title_rect = title_surface.get_rect(center = (600,100))
 
 start_surface = test_font.render('Press Space to Start', True, '#D9423A')
 start_rect = start_surface.get_rect(center = (600,750))
+
+#timer
+obstacle_timer = pygame.USEREVENT + 1
+pygame.time.set_timer(obstacle_timer, 1550)
 
 # game code
 while running: # this is just a while true loop because running  = True  
@@ -66,6 +82,8 @@ while running: # this is just a while true loop because running  = True
                 frog_rect.left = 1270
                 player_rect.midbottom = (200, 700)
                 start_time = pygame.time.get_ticks() # resets score to 0
+        if event.type == obstacle_timer and game_active:
+            obstacle_rect_list.append(frog_surface.get_rect(midbottom = (randint(1300,1600), 700))) 
     
 
     if game_active:
@@ -76,21 +94,22 @@ while running: # this is just a while true loop because running  = True
 
         score = display_score()
 
-        frog_rect.left -= 6
-        screen.blit(frog_surface,frog_rect) # this is the mini frog moving across the screen
-        if frog_rect.left < -300: frog_rect.left = 1270
+        # frog_rect.left -= 6.3
+        # screen.blit(frog_surface,frog_rect) # this is the mini frog moving across the screen
+        # if frog_rect.left < -300: frog_rect.left = 1270
         
         #player
-        player_gravity += 0.82
+        player_gravity += 0.825
         player_rect.y += player_gravity
         if player_rect.bottom >= 700: player_rect.bottom = 700 # this is the ground collision, so player doesn't fall through ground
         screen.blit(player_surface,player_rect) # this is the player charectar, not moving rn but will be in future
 
+        #obstacle movement
+        obstacle_rect_list = obstacle_movement(obstacle_rect_list)
 
         if player_rect.colliderect(frog_rect):
             game_active = False
         
-    
     else:
         screen.fill((50, 73, 110))
         screen.blit(player_stand, player_stand_rect)
@@ -106,5 +125,6 @@ while running: # this is just a while true loop because running  = True
        
     pygame.display.update() # refreshed display to schow what we added  
     clock.tick(60) # max fps, min fps is just based on comp so optimise  #
+
 
 pygame.quit()
