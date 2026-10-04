@@ -55,7 +55,7 @@ while running: # this is just a while true loop because running  = True
                 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and player_rect.bottom >= 695:
-                    player_gravity = -25 
+                    player_gravity = -25
         else: # reset after game over
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 game_active = True
@@ -69,9 +69,6 @@ while running: # this is just a while true loop because running  = True
         screen.blit(sky_surf,(0,0))
         screen.blit(ground_surf,(0,700))
         screen.blit(ground_surf,(510,700))
-        # pygame.draw.rect(screen,((20,20,20)),score_rect)
-        # pygame.draw.rect(screen,(130,230,180),score_rect,5, 8)
-        # screen.blit(score_surf,score_rect)
 
         score = display_score()
 
