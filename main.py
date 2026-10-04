@@ -9,9 +9,9 @@ score = 0
 # score system, making it a function makes it more usable and easier to change  
 def display_score(): 
     current_time = (pygame.time.get_ticks() - start_time) // 1000
-    score_surf = test_font.render(f'Score: {current_time}', True, (250,250,250))
+    score_surf = test_font.render(f'Score: {current_time}', False, (50,50,50))
     score_rect = score_surf.get_rect(center = (600,100))
-    pygame.draw.rect(screen,((130,150,240)),score_rect, 0, 10)
+    pygame.draw.rect(screen,('#74BAF5'),score_rect,)
     screen.blit(score_surf,score_rect)
     return current_time
 
@@ -19,11 +19,19 @@ def obstacle_movement(obstacle_list):
     if obstacle_list:
         for obstacle_rect in obstacle_list:
             obstacle_rect.x -= 6.7
-            screen.blit(frog_surface,obstacle_rect)
+
+            if obstacle_rect.bottom == 400: screen.blit(sword_surf,obstacle_rect)
+            else: screen.blit(frog_surface,obstacle_rect)
 
         obstacle_list = [obstacle for obstacle in obstacle_list if obstacle.x > -100] # 
         return obstacle_list
     else: return []
+
+def collisions(player, obstacles):
+    if obstacles:
+        for obstacle_rect in obstacles:
+            if player.colliderect(obstacle_rect): return False
+    return True
 
 # ui setup
 pygame.init()
@@ -31,7 +39,7 @@ screen = pygame.display.set_mode((1200, 857)) # i just set to diemsions of pictu
 clock = pygame.time.Clock()
 pygame.display.set_caption("Frog") # name of window at the top  
 running = True
-test_font = pygame.font.Font(None,100) # default font, size 100 maybe pixels idk#
+test_font = pygame.font.Font('fonts/pixeltype.ttf',100) # default font, size 100 maybe pixels idk#
 
 #bg
 sky_surf = pygame.image.load('graphics/sky.jpg').convert()
@@ -40,7 +48,9 @@ ground_surf = pygame.image.load('graphics/ground.png').convert_alpha()
 #charectars 
 frog_surface = pygame.image.load('graphics/frog.png').convert_alpha()
 frog_surface = pygame.transform.rotozoom(frog_surface, 0, 0.6)
-frog_rect = frog_surface.get_rect(midbottom = (800, 700))
+
+sword_surf = pygame.image.load('graphics/sword.png').convert_alpha()
+sword_surf = pygame.transform.rotozoom(sword_surf, 0, 1.3)
 
 obstacle_rect_list = []
 
@@ -53,10 +63,10 @@ player_gravity = 0
 player_stand = pygame.image.load('graphics/player.png').convert_alpha()
 player_stand_rect = player_stand.get_rect(center = (580,420))
 
-title_surface = test_font.render('The Frog Game', True, '#D9423A') # kinda wanna change the colour  
+title_surface = test_font.render('The Frog Game', False, '#D9423A') # kinda wanna change the colour  
 title_rect = title_surface.get_rect(center = (600,100))
 
-start_surface = test_font.render('Press Space to Start', True, '#D9423A')
+start_surface = test_font.render('Press Space to Start', False, '#D9423A')
 start_rect = start_surface.get_rect(center = (600,750))
 
 #timer
@@ -79,11 +89,13 @@ while running: # this is just a while true loop because running  = True
         else: # reset after game over
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 game_active = True
-                frog_rect.left = 1270
-                player_rect.midbottom = (200, 700)
                 start_time = pygame.time.get_ticks() # resets score to 0
+                
         if event.type == obstacle_timer and game_active:
-            obstacle_rect_list.append(frog_surface.get_rect(midbottom = (randint(1300,1600), 700))) 
+            if randint(0,2):
+                obstacle_rect_list.append(frog_surface.get_rect(midbottom = (randint(1300,1600), 700))) 
+            else:
+                obstacle_rect_list.append(sword_surf.get_rect(midbottom = (randint(1300,1600), 400)))
     
 
     if game_active:
@@ -93,10 +105,6 @@ while running: # this is just a while true loop because running  = True
         screen.blit(ground_surf,(510,700))
 
         score = display_score()
-
-        # frog_rect.left -= 6.3
-        # screen.blit(frog_surface,frog_rect) # this is the mini frog moving across the screen
-        # if frog_rect.left < -300: frog_rect.left = 1270
         
         #player
         player_gravity += 0.825
@@ -107,12 +115,15 @@ while running: # this is just a while true loop because running  = True
         #obstacle movement
         obstacle_rect_list = obstacle_movement(obstacle_rect_list)
 
-        if player_rect.colliderect(frog_rect):
-            game_active = False
+        game_active = collisions(player_rect, obstacle_rect_list)
         
     else:
         screen.fill((50, 73, 110))
         screen.blit(player_stand, player_stand_rect)
+        obstacle_rect_list.clear() # clears the obstacles so they don't stay on screen when game is restarted
+        player_rect.midbottom = (200, 700)
+        player_gravity = 0
+
 
         screen.blit(title_surface, title_rect)
         if score == 0: 
