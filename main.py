@@ -3,7 +3,7 @@ import sys
 from random import randint
 
 
-#start variables
+#start global variables
 game_active = False
 start_time = 0
 score = 0
@@ -45,10 +45,10 @@ running = True
 test_font = pygame.font.Font('fonts/pixeltype.ttf',130) # default font, size 100 maybe pixels idk#
 
 #bg
-sky_surf = pygame.image.load('graphics/sky.jpg').convert()
+sky_surf = pygame.image.load('graphics/sky.jpg').convert_alpha()
 ground_surf = pygame.image.load('graphics/ground.png').convert_alpha()
 
-#charectars 
+#charectars / obstacles
 frog_surf = pygame.image.load('graphics/frog.png').convert_alpha()
 frog_surf = pygame.transform.rotozoom(frog_surf, 0, 0.6)
 
@@ -76,7 +76,7 @@ start_rect = start_surf.get_rect(center = (600,750))
 obstacle_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(obstacle_timer, 1550)
 
-# game code
+# main game code
 while running: # this is just a while true loop because running  = True  
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
